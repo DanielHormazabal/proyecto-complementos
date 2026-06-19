@@ -1,11 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Finis Trabaja - Panel de Estudiante</title>
+    <!-- Vincularemos un archivo CSS más adelante para que se vea ordenado -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Hola Mundo desde Ingeniería de Software</h1>
+
+<!-- 1. BANNER SUPERIOR DE LA UNIVERSIDAD -->
+    <header class="main-header">
+        <div class="banner-container">
+            <!-- Cargamos tu nueva imagen desde la carpeta -->
+            <img src="images/banner-uft.png" alt="Universidad Finis Terrae" class="banner-img">
+            <h1>Finis Trabaja</h1>
+        </div>
+        <!-- Navegación por pestañas -->
+        <nav class="tab-navigation">
+            <button class="tab-button active">VER OFERTAS DE TRABAJO</button>
+            <button class="tab-button">MIS POSTULACIONES</button>
+        </nav>
+    </header>
+
+    <div class="main-container">
+        
+        <!-- 2. BARRA LATERAL (DATOS USUARIO) -->
+        <aside class="profile-sidebar">
+            <div class="profile-avatar">FOTO USUARIO</div>
+            <div class="profile-info">
+                <h2>Daniel Hormazábal</h2>
+                <p><strong>RUT:</strong> 12.345.678-9</p>
+                <p><strong>Carrera:</strong> Ingeniería Civil Informática</p>
+                <p><strong>Año:</strong> 4to Año</p>
+            </div>
+            <div class="profile-description">
+                <h3>DESCRIPCION PERFIL</h3>
+                <p>Estudiante enfocado en el desarrollo de software, con conocimientos en entornos web y gestión de proyectos TIC.</p>
+            </div>
+        </aside>
+
+        <!-- 3. CONTENEDOR PRINCIPAL DE OFERTAS -->
+        <main class="offers-content">
+            
+            <!-- TARJETA DE OFERTA 1 -->
+            <article class="offer-card">
+                <div class="company-logo">FOTO EMPRESA</div>
+                
+                <div class="offer-details">
+                    <h2 class="offer-title">Desarrollador Web Frontend <span class="postulants-badge">(3 postulantes)</span></h2>
+                    <p class="offer-description">Busco estudiante para apoyar en la maquetación y diseño de interfaces usando HTML, CSS y componentes JavaScript.</p>
+                    <p class="offer-schedule"><strong>Horario:</strong> Part-time (20 horas semanales, flexible)</p>
+                    <p class="offer-salary"><strong>Sueldo:</strong> $450.000</p>
+                    <button class="apply-button">Seleccionar Empresa</button>
+                </div>
+
+                <div class="company-banner">
+                    <span>imagen empresa estilo banner con fade</span>
+                </div>
+            </article>
+
+            <!-- TARJETA DE OFERTA 2 -->
+            <article class="offer-card">
+                <div class="company-logo">FOTO EMPRESA</div>
+                
+                <div class="offer-details">
+                    <h2 class="offer-title">Analista Junior TI <span class="postulants-badge">(1 postulante)</span></h2>
+                    <p class="offer-description">Apoyo en la gestión de infraestructura local, soporte técnico a usuarios y documentación de procesos del área.</p>
+                    <p class="offer-schedule"><strong>Horario:</strong> Media jornada (Lunes a Viernes por la mañana)</p>
+                    <p class="offer-salary"><strong>Sueldo:</strong> $400.000</p>
+                    <button class="apply-button">Seleccionar Empresa</button>
+                </div>
+
+                <div class="company-banner">
+                    <span>imagen empresa estilo banner con fade</span>
+                </div>
+            </article>
+
+        </main>
+    </div>
+
+<script src="script.js"></script>
 </body>
 </html>
