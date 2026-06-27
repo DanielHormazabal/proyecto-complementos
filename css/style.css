@@ -1,19 +1,20 @@
 /* ==========================================================================
-   CONFIGURACIÓN GENERAL
+   CONFIGURACIÓN GENERAL Y RESET
    ========================================================================== */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f6f8;
+    color: #333;
 }
 
 /* ==========================================================================
-   1. BANNER SUPERIOR DE LA UNIVERSIDAD
+   1. COMPONENTES DEL ENCABEZADO INSTITUCIONAL
    ========================================================================== */
 .main-header {
     background-color: #fff;
-    border-bottom: 4px solid #133253; /* Azul Marino UFT */
+    border-bottom: 4px solid #133253; /* Azul Marino Institucional */
     width: 100%;
 }
 
@@ -38,6 +39,7 @@ body {
     object-position: center;
 }
 
+/* Capa de contraste oscuro sobre el banner para asegurar legibilidad del texto */
 .banner-container::after {
     content: '';
     position: absolute;
@@ -45,189 +47,219 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, rgba(19, 50, 83, 0.85), rgba(0, 148, 182, 0.7));
+    background-color: rgba(19, 50, 83, 0.75);
     z-index: 1;
 }
 
-.banner-container h1 {
+.main-header h1 {
     position: relative;
-    z-index: 2;
-    color: white;
-    font-size: 32px;
+    color: #fff;
+    font-size: 28px;
     font-weight: bold;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    z-index: 2;
     margin: 0;
-    letter-spacing: 1px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.4);
 }
 
-/* Navegación por pestañas */
+/* Acciones Flotantes en el Header */
+.btn-header-action {
+    position: absolute;
+    top: 20px;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    z-index: 10;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+.btn-danger-action { background: rgba(217, 83, 79, 0.9); }
+.btn-danger-action:hover { background: rgba(217, 83, 79, 1); }
+.btn-dark-action { background: rgba(0,0,0,0.5); }
+.btn-dark-action:hover { background: rgba(0,0,0,0.7); }
+.position-left { right: 160px; }
+.position-right { right: 20px; }
+
+/* ==========================================================================
+   2. SISTEMA DE PESTAÑAS (TAB NAVIGATION)
+   ========================================================================== */
 .tab-navigation {
     display: flex;
-    background-color: #133253;
-    width: 100%;
+    justify-content: center;
+    background-color: #fff;
+    border-bottom: 1px solid #e2e8f0;
 }
 
 .tab-button {
     background: none;
     border: none;
-    color: #b0c4de;
-    padding: 14px 24px;
+    padding: 15px 30px;
     font-size: 13px;
     font-weight: bold;
+    color: #718096;
     cursor: pointer;
-    transition: background 0.2s, color 0.2s;
+    position: relative;
+    transition: color 0.2s;
 }
 
 .tab-button:hover {
-    background-color: #1a446c;
-    color: #fff;
+    color: #133253;
 }
 
 .tab-button.active {
-    background-color: #0094b6; /* Turquesa E-Finis */
-    color: white;
+    color: #133253;
+}
+
+/* Indicador lineal inferior para la pestaña activa */
+.tab-button.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: #0094b6; /* Celeste Corporativo */
 }
 
 /* ==========================================================================
-   2. DISTRIBUCIÓN DEL PANEL (GRILLA GENERAL)
+   3. ARQUITECTURA DEL CONTENEDOR GRID/SIDEBAR
    ========================================================================== */
 .main-container {
     display: grid;
     grid-template-columns: 300px 1fr;
     gap: 25px;
-    padding: 25px;
-    max-width: 1400px;
-    margin: 0 auto;
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
 }
 
-/* Barra lateral de perfil */
+/* Estilos de la Barra Lateral */
 .profile-sidebar {
-    background-color: white;
-    border: 1px solid #dcdcdc;
-    border-top: 4px solid #133253;
-    border-radius: 6px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    background-color: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 25px;
+    height: fit-content;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
 }
 
 .profile-avatar {
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
-    background-color: #eaeff2;
-    border: 3px solid #0094b6;
-    margin: 0 auto 15px auto;
+    background-color: #e2e8f0;
+    margin: 0 auto 20px auto;
     display: flex;
     align-items: center;
     justify-content: center;
+    color: #718096;
     font-weight: bold;
-    color: #555;
-    font-size: 12px;
+    border: 3px solid #133253;
+}
+
+.circular-avatar {
+    overflow: hidden;
+    padding: 0;
+    background: #fff;
+}
+
+.circular-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .profile-info {
-    text-align: left;
-    border-bottom: 1px solid #edf1f4;
+    text-align: center;
+    border-bottom: 1px solid #e2e8f0;
     padding-bottom: 15px;
     margin-bottom: 15px;
 }
 
 .profile-info h2 {
+    margin: 0 0 8px 0;
     font-size: 18px;
-    margin: 0 0 10px 0;
     color: #133253;
 }
 
 .profile-info p {
-    margin: 6px 0;
+    margin: 5px 0;
     font-size: 13px;
-    color: #555;
-}
-
-.profile-description {
-    text-align: left;
+    color: #4a5568;
 }
 
 .profile-description h3 {
-    font-size: 13px;
-    color: #0094b6;
-    margin: 0 0 6px 0;
-    text-transform: uppercase;
+    font-size: 12px;
+    color: #a0aec0;
+    letter-spacing: 1px;
+    margin: 0 0 8px 0;
 }
 
 .profile-description p {
     font-size: 13px;
-    color: #666;
-    line-height: 1.4;
+    color: #4a5568;
+    line-height: 1.5;
+    margin: 0;
 }
 
 /* ==========================================================================
-   3. CONTENEDOR Y NUEVAS TARJETAS DE OFERTAS
+   4. TARJETAS DE OFERTA Y ACORDEONES (ZONA DINÁMICA)
    ========================================================================== */
 .offers-content {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 15px;
 }
 
 .offer-card {
-    position: relative; /* Clave para posicionar el fondo absoluto detrás */
-    background-color: white;
-    border: 1px solid #dcdcdc;
-    border-left: 5px solid #0094b6; /* Línea turquesa izquierda */
-    border-radius: 6px;
+    position: relative;
+    background-color: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
     display: grid;
-    grid-template-columns: 160px 1fr; /* 2 Columnas fijas: Logo y Detalles */
+    grid-template-columns: 180px 1fr;
     overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.offer-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-}
-
-/* NUEVO: El banner colocado como un fondo sutil que se desvanece hacia el centro */
+/* Banner decorativo difuminado al interior de las tarjetas */
 .card-background-banner {
     position: absolute;
     top: 0;
-    right: 0;
-    width: 50%; /* Cubre la mitad derecha de la tarjeta */
+    left: 0;
+    width: 100%;
     height: 100%;
     background-size: cover;
     background-position: center;
+    filter: blur(15px);
+    opacity: 0.15;
     z-index: 1;
-    opacity: 0.25; /* Súper bajito para que no compita con el texto */
-    /* Truco de máscara: Se va desvaneciendo (haciendo transparente) de derecha a izquierda */
-    -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
-    mask-image: linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
-    pointer-events: none; /* Evita que bloquee los clics en los botones */
+    pointer-events: none;
 }
 
-/* CONTENEDOR DEL LOGO (CENTRADITO) */
 .company-logo-container {
+    background-color: #f8fafc;
+    border-right: 1px solid #e2e8f0;
     display: flex;
     flex-direction: column;
-    align-items: center;     /* Centra horizontalmente */
-    justify-content: center;    /* Centra verticalmente */
+    align-items: center;
+    justify-content: center;
     padding: 20px;
-    background-color: rgba(248, 250, 252, 0.8); /* Fondo semi-transparente limpio */
-    border-right: 1px solid #e2e8f0;
-    text-align: center;
-    z-index: 2; /* Por encima del banner */
+    z-index: 2;
 }
 
-/* LOGO CIRCULAR SOLICITADO */
 .company-circular-logo {
-    width: 85px;
-    height: 85px;
-    border-radius: 50%; /* Lo hace perfectamente redondo */
-    object-fit: cover;  /* Centra la imagen adentro del círculo sin estirarse */
-    border: 3px solid #133253; /* Borde elegante en azul marino */
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #133253;
     background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .company-name-label {
@@ -235,65 +267,126 @@ body {
     font-weight: bold;
     margin-top: 10px;
     color: #133253;
+    text-align: center;
 }
 
-/* DETALLES DE LA OFERTA */
 .offer-details {
     padding: 20px;
-    z-index: 2; /* Garantiza que el texto quede siempre sobre el banner de fondo */
+    z-index: 2;
 }
 
 .offer-title {
     font-size: 19px;
     margin: 0 0 8px 0;
     color: #133253;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.postulants-badge {
-    font-size: 11px;
-    color: #0094b6;
-    background-color: #e6f4f8;
-    padding: 3px 9px;
-    border-radius: 12px;
-    font-weight: 600;
 }
 
 .offer-description {
     font-size: 14px;
-    color: #333; /* Un pelito más oscuro para máxima legibilidad */
-    margin: 0 0 14px 0;
+    color: #4a5568;
+    margin: 0 0 15px 0;
     line-height: 1.5;
-    max-width: 85%; /* Evita que el texto choque directamente con el borde derecho del banner */
 }
 
 .offer-info-line {
-    margin: 5px 0;
-    font-size: 13px;
-    color: #2d3748;
+    font-size: 12px;
+    color: #718096;
+    margin: 0 0 15px 0;
 }
 
-/* BOTONES DE ACCIÓN */
+/* Botones de Acción Estándar */
 .apply-button {
-    margin-top: 12px;
-    background-color: #337ab7;
-    color: white;
+    background-color: #0094b6;
+    color: #fff;
     border: none;
-    padding: 9px 18px;
-    border-radius: 4px;
-    font-weight: bold;
+    padding: 10px 20px;
     font-size: 13px;
+    font-weight: bold;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background-color 0.2s;
 }
 
-.apply-button:hover {
-    background-color: #245988;
+.apply-button:hover:not(:disabled) {
+    background-color: #007a96;
 }
 
-.apply-button.btn-success {
-    background-color: #28a745 !important;
-    cursor: default;
+.apply-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.85;
+}
+
+.btn-success { background-color: #28a745 !important; color: white; }
+.btn-danger { background-color: #dc3545 !important; color: white; }
+
+/* ==========================================================================
+   5. COMPONENTES DE LOGIN (INDEX.HTML)
+   ========================================================================== */
+.login-wrapper {
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    min-height: 60vh; 
+    padding: 20px;
+}
+
+.login-card {
+    background-color: white; 
+    border: 1px solid #dcdcdc; 
+    border-top: 4px solid #133253; 
+    border-radius: 6px; 
+    padding: 30px; 
+    width: 100%; 
+    max-width: 450px; 
+    text-align: center; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.login-title { color: #133253; margin-top: 0; margin-bottom: 10px; font-size: 22px; }
+.login-subtitle { color: #666; font-size: 14px; margin-bottom: 25px; line-height: 1.4; }
+
+.login-section {
+    background-color: #f9f9f9; 
+    border: 1px solid #e2e8f0; 
+    border-radius: 6px; 
+    padding: 15px; 
+    margin-bottom: 20px;
+}
+.border-student { border-left: 4px solid #133253; }
+.border-company { border-left: 4px solid #0094b6; }
+
+.section-title { margin-top: 0; margin-bottom: 5px; font-size: 16px; font-weight: bold; }
+.color-student { color: #133253; }
+.color-company { color: #0094b6; }
+
+.section-desc { margin: 0 0 12px 0; font-size: 13px; color: #666; }
+
+.btn-login {
+    display: block; 
+    text-decoration: none; 
+    color: white; 
+    border: none; 
+    padding: 12px; 
+    font-weight: bold; 
+    border-radius: 4px; 
+    font-size: 14px; 
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+.btn-login:hover { opacity: 0.9; }
+.bg-student { background-color: #133253; }
+.bg-company { background-color: #0094b6; width: 100%; }
+
+.select-group { display: flex; flex-direction: column; gap: 10px; }
+.form-select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+
+.btn-reset-link {
+    margin-top: 25px; 
+    background: none; 
+    border: none; 
+    color: #a94442; 
+    cursor: pointer; 
+    font-size: 12px; 
+    font-weight: bold; 
+    text-decoration: underline;
 }

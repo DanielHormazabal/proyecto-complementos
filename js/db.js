@@ -1,6 +1,11 @@
-// ==========================================================================
-// REPOSITORIO SEMILLA DE OFERTAS COMPARTIDO
-// ==========================================================================
+/**
+ * DB.JS - CAPA DE DATOS SIMULADA
+ * Este archivo actúa como el motor de persistencia del lado del cliente (Client-Side Storage).
+ * Utiliza LocalStorage para emular una base de datos relacional y persistir la información
+ * entre recargas de página y navegaciones.
+ */
+
+// Repositorio semilla estático (Simula los registros iniciales de una tabla 'ofertas')
 const ofertasSemilla = [
     {
         id: 1,
@@ -70,9 +75,7 @@ const ofertasSemilla = [
     }
 ];
 
-// ==========================================================================
-// ASSETS FIJOS DE DISEÑO (LOGOS Y BANNERS)
-// ==========================================================================
+// Mapeo estático de assets visuales por empresa
 const assetsFijos = [
     { empresa: "Ciudad de Lunargenta", foto: "silvermoon.png", banner: "silvermoon2.png" },
     { empresa: "Adeptus Mechanicus", foto: "adeptus.png", banner: "adeptus2.png" },
@@ -82,14 +85,62 @@ const assetsFijos = [
     { empresa: "La Orden Horadrim", foto: "horadrim.png", banner: "horadrim2.png" }
 ];
 
-// ==========================================================================
-// FUNCIÓN DE VERIFICACIÓN Y AUTORREPARACIÓN
-// ==========================================================================
+// Pool de alumnos de prueba (Simula la tabla 'alumnos')
+const alumnosPrueba = [
+    { rut: "12345678-9", nombre: "Elena Rostova", carrera: "Ingeniería Civil Informática", bio: "Estudiante destacada e impulsora del proyecto. Apasionada por el desarrollo web front-end, interfaces interactivas y la arquitectura de sistemas escalables en la nube.", foto: "prota.png" },
+    { rut: "11223344-5", nombre: "Constanza Vega", carrera: "Ingeniería Civil Informática", bio: "Especialista en ciberseguridad, análisis forense digital y auditorías de código preventivas.", foto: "userF1.png" },
+    { rut: "22334455-6", nombre: "Ignacio Toledo", carrera: "Ingeniería en Computación", bio: "Desarrollador mobile nativo con fuerte interés en algoritmos de optimización distribuidos.", foto: "userM1.png" },
+    { rut: "33445566-7", nombre: "Camila Sanhueza", carrera: "Ingeniería Civil Informática", bio: "Entusiasta de la ciencia de datos, machine learning y el procesamiento de lenguaje natural.", foto: "userF2.png" },
+    { rut: "44556677-8", nombre: "Felipe Oyarzún", carrera: "Ingeniería en Computación", bio: "Administrador de sistemas enfocado en la cultura DevOps e infraestructura como código (IaC).", foto: "userM2.png" },
+    { rut: "55667788-9", nombre: "Valentina Henríquez", carrera: "Ciencia de Datos", bio: "Enfocada en el modelamiento predictivo estadístico y análisis estratégico de Big Data corporativo.", foto: "userF3.png" },
+    { rut: "66778899-0", nombre: "Matías Carrasco", carrera: "Ingeniería Civil Informática", bio: "Desarrollador backend con amplio dominio en arquitecturas de microservicios y APIs RESTful.", foto: "userM3.png" },
+    { rut: "77889900-1", nombre: "Javiera Muñoz", carrera: "Ingeniería en Computación", bio: "Diseñadora de interfaces de usuario (UI/UX) enfocada en prototipado rápido y testeo de usabilidad.", foto: "userF4.png" },
+    { rut: "88990011-2", pointer: "Gonzalo Pinto", nombre: "Gonzalo Pinto", carrera: "Ciencia de Datos", bio: "Estudiante de último año enfocado en analítica predictiva y automatización inteligente de flujos.", foto: "userM4.png" },
+    { rut: "99001122-3", nombre: "Francisca Soto", carrera: "Ingeniería Civil Informática", bio: "Interesada en el desarrollo de simulaciones en tiempo real, física computacional y videojuegos.", foto: "userF5.png" }
+];
+
+/**
+ * inicializarLocalStorage
+ * Verifica la existencia de las claves de almacenamiento. Si no existen, realiza la hidratación
+ * inicial (seeding) distribuyendo alumnos al azar sin incluir a la alumna protagonista (Elena).
+ */
 function inicializarLocalStorage() {
     if (!localStorage.getItem('ofertasLaborales')) {
-        localStorage.setItem('ofertasLaborales', JSON.stringify(ofertasSemilla));
+        // Excluimos explícitamente a Elena Rostova del pool de asignación aleatoria inicial
+        const alumnosDisponiblesParaAzar = alumnosPrueba.filter(alumno => alumno.rut !== "12345678-9");
+
+        const ofertasModificadas = ofertasSemilla.map(oferta => {
+            const postulantesAsignados = [];
+            if (oferta.postulantes > 0) {
+                // Algoritmo de ordenamiento aleatorio sutil (Fisher-Yates simplificado mediante .sort)
+                const copiaAlumnos = [...alumnosDisponiblesParaAzar].sort(() => Math.random() - 0.5);
+                
+                // Determinamos cuántos alumnos meter en la vacante sin desbordar el pool
+                const limite = Math.min(oferta.postulantes, copiaAlumnos.length);
+                for (let i = 0; i < limite; i++) {
+                    postulantesAsignados.push({
+                        rut: copiaAlumnos[i].rut,
+                        nombre: copiaAlumnos[i].nombre,
+                        carrera: copiaAlumnos[i].carrera,
+                        bio: copiaAlumnos[i].bio,
+                        foto: copiaAlumnos[i].foto,
+                        estado: "En Revisión" // CORRECCIÓN INTERNA: Estandarizado a "estado"
+                    });
+                }
+            }
+            return {
+                ...oferta,
+                postulantesDetalle: postulantesAsignados
+            };
+        });
+        localStorage.setItem('ofertasLaborales', JSON.stringify(ofertasModificadas));
     }
+    
+    // Inicializamos la tabla intermedia de postulaciones de Elena como un array de relaciones { id, estado }
     if (!localStorage.getItem('misPostulaciones')) {
         localStorage.setItem('misPostulaciones', JSON.stringify([]));
     }
 }
+
+// Se autoejecuta la inicialización apenas se procesa el script
+inicializarLocalStorage();

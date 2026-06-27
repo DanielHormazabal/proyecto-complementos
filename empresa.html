@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Finis Trabaja - Panel de Empresa</title>
     <link rel="icon" type="image/png" href="images/favicon.png">
-    <link <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
@@ -14,9 +14,10 @@
             <img src="images/banner-uft.png" alt="Universidad Finis Terrae" class="banner-img">
             <h1 id="tituloEmpresaHeader">Finis Trabaja - Panel Corporativo</h1>
             
-            <button onclick="const sesionGuardada = sessionStorage.getItem('empresaLogueada'); localStorage.clear(); sessionStorage.clear(); if(sesionGuardada) sessionStorage.setItem('empresaLogueada', sesionGuardada); alert('Base de Datos simulada restaurada a los valores de fábrica.'); window.location.reload();" style="position: absolute; right: 160px; top: 20px; color: white; background: rgba(217, 83, 79, 0.9); padding: 8px 15px; border-radius: 4px; border: none; cursor: pointer; font-size: 12px; font-weight: bold; z-index: 10;">Reiniciar BD ↺</button>
-            <a href="index.html" style="position: absolute; right: 20px; top: 20px; color: white; background: rgba(0,0,0,0.5); padding: 8px 15px; border-radius: 4px; text-decoration: none; font-size: 12px; font-weight: bold; z-index: 10;">➔ Cerrar Sesión</a>
+            <button onclick="const sesionGuardada = sessionStorage.getItem('empresaLogueada'); localStorage.clear(); sessionStorage.clear(); if(sesionGuardada) sessionStorage.setItem('empresaLogueada', sesionGuardada); alert('Base de Datos simulada restaurada a los valores de fábrica.'); window.location.reload();" class="btn-header-action btn-danger-action position-left">Reiniciar BD ↺</button>
+            <a href="index.html" class="btn-header-action btn-dark-action position-right">➔ Cerrar Sesión</a>
         </div>
+        
         <nav class="tab-navigation">
             <button id="btnTabGlobal" class="tab-button active" onclick="cambiarSeccionEmpresa('global')">EXPLORADOR GLOBAL</button>
             <button id="btnTabMisOfertas" class="tab-button" onclick="cambiarSeccionEmpresa('propias')">MIS OFERTAS (GESTIÓN)</button>
@@ -24,16 +25,22 @@
     </header>
 
     <div class="main-container">
+        
         <aside class="profile-sidebar">
-            <div id="empresaAvatar" class="profile-avatar" style="font-size: 24px;">EMP</div>
+            <div id="empresaAvatar" class="profile-avatar circular-avatar">EMP</div>
             <div class="profile-info">
                 <h2 id="nombreEmpresaSidebar">Cargando Empresa...</h2>
-                <p><strong>Tipo:</strong> Entidad Asociada UFT</p>
-                <p><strong>Convenio:</strong> Activo (2026)</p>
+                <p><strong>Tipo:</strong> Entidad Asociada</p>
+                <p><strong>Convenio:</strong> Activo (VUT)</p>
+            </div>
+            <div class="profile-description">
+                <h3>REGLAS DE EVALUACIÓN</h3>
+                <p>Al hacer clic en el botón "Perfil" de un postulante, podrás revisar su biografía extendida y resolver su estado académico ("Aceptar" o "Rechazar"). La resolución impactará de forma inmediata en el portal del estudiante.</p>
             </div>
         </aside>
 
-        <main class="offers-content" id="contenedorEmpresaDinamico" style="width: 100%; display: flex; flex-direction: column; gap: 16px;"></main>
+        <main class="offers-content" id="contenedorEmpresaDinamico">
+            </main>
     </div>
 
     <script src="js/db.js"></script>

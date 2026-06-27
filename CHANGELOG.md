@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.0] - 2026-06-27
+### Añadido
+- Consistencia Semántica en el HTML: Se fijaron los datos de Elena Rostova directamente en el maquetado estático de estudiante.html, eliminando el parpadeo visual (FOUC) al cargar la página.
+- Capa de Diseño Unificada: Migración completa de los estilos inline inyectados dinámicamente por JavaScript hacia clases CSS estructuradas y reutilizables en style.css (como .circular-avatar, .login-card, .btn-header-action).
+
+### Modificado
+- Unificación del Modelo de Datos: Corrección de la propiedad desincronizada estadoResolucion. Ahora todo el sistema opera bajo la propiedad única estado, garantizando reactividad total entre el panel administrador y el portal del alumno.
+- Optimización de Persistencia (Normalización): Se reestructuró misPostulaciones en el localStorage para que funcione como una tabla relacional intermedia (muchos a muchos), almacenando solo tuplas identificadoras (id y estado) en lugar de clonar objetos completos desincronizados.
+- Eliminación de Código Muerto: Se removieron las llamadas redundantes duplicadas a inicializarLocalStorage() al inicio de los controladores de vista, centralizando el ciclo de vida del seeding en el script de carga inicial.
+
+- Corrección de Erreces de Sintaxis: Reparación del tag mal cerrado <link <link...> en la cabecera de empresa.html.
+
 ## [0.4.0] - 2026-06-27
 
 ### Añadido

@@ -16,23 +16,26 @@
         </div>
     </header>
 
-    <div style="display: flex; justify-content: center; align-items: center; min-height: 50vh; padding: 20px;">
-        <div style="background-color: white; border: 1px solid #dcdcdc; border-top: 4px solid #133253; border-radius: 6px; padding: 30px; width: 100%; max-width: 450px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+    <div class="login-wrapper">
+        <div class="login-card">
             
-            <h2 style="color: #133253; margin-top: 0; margin-bottom: 10px; font-size: 22px;">¡Bienvenido al Portal!</h2>
-            <p style="color: #666; font-size: 14px; margin-bottom: 25px;">Selecciona tu perfil para ingresar al sistema de vinculación laboral.</p>
-            
-            <div style="display: flex; flex-direction: column; gap: 16px;">
-                
-                <a href="estudiante.html" style="display: block; background-color: #0094b6; color: white; text-decoration: none; padding: 14px; font-weight: bold; border-radius: 4px; font-size: 15px; transition: background 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                    Ingresar como Alumno
-                </a>
-                
-                <hr style="border: 0; border-top: 1px solid #eee; margin: 5px 0;">
+            <h2 class="login-title">¡Bienvenido al Portal Laboral!</h2>
+            <p class="login-subtitle">Selecciona tu tipo de perfil para ingresar a la plataforma simulada:</p>
 
-                <div style="text-align: left;">
-                    <label style="font-size: 12px; font-weight: bold; color: #133253; display: block; margin-bottom: 6px;">Ingresar como Perfil Empresa:</label>
-                    <select id="loginEmpresaSelect" style="padding: 10px; border-radius: 4px; border: 1px solid #ccc; width: 100%; font-family: inherit; font-size: 14px; color: #333; cursor: pointer; margin-bottom: 10px;">
+            <div class="login-section border-student">
+                <h3 class="section-title color-student">Módulo de Estudiantes</h3>
+                <p class="section-desc">Ingresa de forma directa como la alumna activa del sistema.</p>
+                <a href="estudiante.html" class="btn-login bg-student">
+                    Ingresar como Elena Rostova ➔
+                </a>
+            </div>
+
+            <div class="login-section border-company">
+                <h3 class="section-title color-company">Módulo de Empresas</h3>
+                <p class="section-desc">Selecciona una organización del ecosistema para gestionar sus vacantes.</p>
+                
+                <div class="select-group">
+                    <select id="loginEmpresaSelect" class="form-select">
                         <option value="Ciudad de Lunargenta">Ciudad de Lunargenta</option>
                         <option value="Adeptus Mechanicus">Adeptus Mechanicus</option>
                         <option value="Specialized Extracurricular Execution Squad (SEES)">SEES</option>
@@ -40,14 +43,13 @@
                         <option value="Gremio de Magos de Cyrodiil">Gremio de Magos de Cyrodiil</option>
                         <option value="La Orden Horadrim">La Orden Horadrim</option>
                     </select>
-                    <button onclick="loginComoEmpresa()" style="width: 100%; background-color: #133253; color: white; border: none; padding: 12px; font-weight: bold; border-radius: 4px; font-size: 14px; cursor: pointer;">
+                    <button onclick="loginComoEmpresa()" class="btn-login bg-company">
                         Gestionar Empresa ➔
                     </button>
                 </div>
-                
             </div>
 
-            <button onclick="localStorage.clear(); alert('Base de Datos simulada reiniciada con éxito.'); location.reload();" style="margin-top: 25px; background: none; border: none; color: #a94442; cursor: pointer; font-size: 12px; font-weight: bold; text-decoration: underline;">
+            <button onclick="reinicioGlobal()" class="btn-reset-link">
                 Reiniciar Datos del Sistema ↺
             </button>
 
@@ -55,10 +57,26 @@
     </div>
 
     <script>
+        /**
+         * loginComoEmpresa
+         * Captura la selección de la empresa y la persiste en SessionStorage para
+         * simular una sesión de usuario autenticado en la ventana actual.
+         */
         function loginComoEmpresa() {
             const empresaSeleccionada = document.getElementById('loginEmpresaSelect').value;
             sessionStorage.setItem('empresaLogueada', empresaSeleccionada);
             window.location.href = 'empresa.html';
+        }
+
+        /**
+         * reinicioGlobal
+         * Limpia por completo el almacenamiento local para forzar a db.js a
+         * re-hidratar los datos de prueba en la siguiente recarga.
+         */
+        function reinicioGlobal() {
+            localStorage.clear();
+            alert('Base de Datos simulada reiniciada con éxito.');
+            location.reload();
         }
     </script>
 </body>
