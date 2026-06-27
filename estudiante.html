@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finis Trabaja - Portal de Estudiante</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="banner-container">
+            <img src="images/banner-uft.png" alt="Universidad Finis Terrae" class="banner-img">
+            <h1>Finis Trabaja - Portal Estudiante</h1>
+            
+            <button onclick="localStorage.clear(); alert('Base de Datos reiniciada'); location.reload();" style="position: absolute; right: 150px; top: 20px; color: white; background: rgba(217, 83, 79, 0.9); padding: 8px 15px; border-radius: 4px; border: none; cursor: pointer; font-size: 12px; font-weight: bold; z-index: 10;">Reiniciar BD ↺</button>
+            <a href="index.html" style="position: absolute; right: 20px; top: 20px; color: white; background: rgba(0,0,0,0.5); padding: 8px 15px; border-radius: 4px; text-decoration: none; font-size: 12px; font-weight: bold; z-index: 10;">➔ Cerrar Sesión</a>
+        </div>
+        <nav class="tab-navigation">
+            <button class="tab-button active">VER OFERTAS DE TRABAJO</button>
+            <button class="tab-button">MIS POSTULACIONES</button>
+        </nav>
+    </header>
+
+    <div class="main-container">
+        <aside class="profile-sidebar">
+            <div class="profile-avatar">DH</div>
+            <div class="profile-info">
+                <h2>Daniel Hormazábal</h2>
+                <p><strong>RUT:</strong> 12.345.678-9</p>
+                <p><strong>Carrera:</strong> Ingeniería Civil Informática</p>
+                <p><strong>Año:</strong> 4to Año</p>
+            </div>
+            <div class="profile-description">
+                <h3>DESCRIPCIÓN PERFIL</h3>
+                <p>Estudiante enfocado en el desarrollo de software, con conocimientos en entornos web y gestión de proyectos TIC.</p>
+            </div>
+        </aside>
+
+        <main class="offers-content" style="width: 100%; display: flex; flex-direction: column; gap: 16px;"></main>
+    </div>
+
+    <script src="js/db.js"></script>
+    <script src="js/estudiante.js"></script>
+</body>
+</html>

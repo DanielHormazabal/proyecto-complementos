@@ -1,0 +1,299 @@
+/* ==========================================================================
+   CONFIGURACIÓN GENERAL
+   ========================================================================== */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f6f8;
+}
+
+/* ==========================================================================
+   1. BANNER SUPERIOR DE LA UNIVERSIDAD
+   ========================================================================== */
+.main-header {
+    background-color: #fff;
+    border-bottom: 4px solid #133253; /* Azul Marino UFT */
+    width: 100%;
+}
+
+.banner-container {
+    position: relative;
+    width: 100%;
+    height: 160px;
+    background-color: #133253;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.banner-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.banner-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(19, 50, 83, 0.85), rgba(0, 148, 182, 0.7));
+    z-index: 1;
+}
+
+.banner-container h1 {
+    position: relative;
+    z-index: 2;
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+/* Navegación por pestañas */
+.tab-navigation {
+    display: flex;
+    background-color: #133253;
+    width: 100%;
+}
+
+.tab-button {
+    background: none;
+    border: none;
+    color: #b0c4de;
+    padding: 14px 24px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.tab-button:hover {
+    background-color: #1a446c;
+    color: #fff;
+}
+
+.tab-button.active {
+    background-color: #0094b6; /* Turquesa E-Finis */
+    color: white;
+}
+
+/* ==========================================================================
+   2. DISTRIBUCIÓN DEL PANEL (GRILLA GENERAL)
+   ========================================================================== */
+.main-container {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 25px;
+    padding: 25px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Barra lateral de perfil */
+.profile-sidebar {
+    background-color: white;
+    border: 1px solid #dcdcdc;
+    border-top: 4px solid #133253;
+    border-radius: 6px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+}
+
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: #eaeff2;
+    border: 3px solid #0094b6;
+    margin: 0 auto 15px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #555;
+    font-size: 12px;
+}
+
+.profile-info {
+    text-align: left;
+    border-bottom: 1px solid #edf1f4;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.profile-info h2 {
+    font-size: 18px;
+    margin: 0 0 10px 0;
+    color: #133253;
+}
+
+.profile-info p {
+    margin: 6px 0;
+    font-size: 13px;
+    color: #555;
+}
+
+.profile-description {
+    text-align: left;
+}
+
+.profile-description h3 {
+    font-size: 13px;
+    color: #0094b6;
+    margin: 0 0 6px 0;
+    text-transform: uppercase;
+}
+
+.profile-description p {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.4;
+}
+
+/* ==========================================================================
+   3. CONTENEDOR Y NUEVAS TARJETAS DE OFERTAS
+   ========================================================================== */
+.offers-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.offer-card {
+    position: relative; /* Clave para posicionar el fondo absoluto detrás */
+    background-color: white;
+    border: 1px solid #dcdcdc;
+    border-left: 5px solid #0094b6; /* Línea turquesa izquierda */
+    border-radius: 6px;
+    display: grid;
+    grid-template-columns: 160px 1fr; /* 2 Columnas fijas: Logo y Detalles */
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.offer-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+}
+
+/* NUEVO: El banner colocado como un fondo sutil que se desvanece hacia el centro */
+.card-background-banner {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%; /* Cubre la mitad derecha de la tarjeta */
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+    opacity: 0.25; /* Súper bajito para que no compita con el texto */
+    /* Truco de máscara: Se va desvaneciendo (haciendo transparente) de derecha a izquierda */
+    -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+    mask-image: linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+    pointer-events: none; /* Evita que bloquee los clics en los botones */
+}
+
+/* CONTENEDOR DEL LOGO (CENTRADITO) */
+.company-logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;     /* Centra horizontalmente */
+    justify-content: center;    /* Centra verticalmente */
+    padding: 20px;
+    background-color: rgba(248, 250, 252, 0.8); /* Fondo semi-transparente limpio */
+    border-right: 1px solid #e2e8f0;
+    text-align: center;
+    z-index: 2; /* Por encima del banner */
+}
+
+/* LOGO CIRCULAR SOLICITADO */
+.company-circular-logo {
+    width: 85px;
+    height: 85px;
+    border-radius: 50%; /* Lo hace perfectamente redondo */
+    object-fit: cover;  /* Centra la imagen adentro del círculo sin estirarse */
+    border: 3px solid #133253; /* Borde elegante en azul marino */
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.company-name-label {
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #133253;
+}
+
+/* DETALLES DE LA OFERTA */
+.offer-details {
+    padding: 20px;
+    z-index: 2; /* Garantiza que el texto quede siempre sobre el banner de fondo */
+}
+
+.offer-title {
+    font-size: 19px;
+    margin: 0 0 8px 0;
+    color: #133253;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.postulants-badge {
+    font-size: 11px;
+    color: #0094b6;
+    background-color: #e6f4f8;
+    padding: 3px 9px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.offer-description {
+    font-size: 14px;
+    color: #333; /* Un pelito más oscuro para máxima legibilidad */
+    margin: 0 0 14px 0;
+    line-height: 1.5;
+    max-width: 85%; /* Evita que el texto choque directamente con el borde derecho del banner */
+}
+
+.offer-info-line {
+    margin: 5px 0;
+    font-size: 13px;
+    color: #2d3748;
+}
+
+/* BOTONES DE ACCIÓN */
+.apply-button {
+    margin-top: 12px;
+    background-color: #337ab7;
+    color: white;
+    border: none;
+    padding: 9px 18px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.apply-button:hover {
+    background-color: #245988;
+}
+
+.apply-button.btn-success {
+    background-color: #28a745 !important;
+    cursor: default;
+}
