@@ -227,19 +227,22 @@ body {
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
-/* Banner decorativo difuminado al interior de las tarjetas */
+/* Banner sutil ajustado a 1/3 del ancho en el extremo derecho */
 .card-background-banner {
     position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
+    right: 0;
+    width: 33.33%; /* 1/3 exacto del banner */
     height: 100%;
     background-size: cover;
-    background-position: center;
-    filter: blur(15px);
-    opacity: 0.15;
+    background-position: center right;
+    background-repeat: no-repeat;
     z-index: 1;
     pointer-events: none;
+    
+    /* El degradado aplica una transición suave dentro de ese tercio de espacio */
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 1) 100%);
+    mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 1) 100%);
 }
 
 .company-logo-container {

@@ -29,10 +29,20 @@ function inicializar() {
     renderizarVista();
 }
 
-window.cambiarSeccionEmpresa = function(destino) {
-    subTabActiva = destino;
-    document.getElementById('btnTabGlobal').classList.toggle('active', destino === 'global');
-    document.getElementById('btnTabMisOfertas').classList.toggle('active', destino === 'propias');
+window.cambiarSeccionEmpresa = function(seccion) {
+    subTabActiva = seccion;
+    
+    const btnGlobal = document.getElementById('btnTabGlobal');
+    const btnPropias = document.getElementById('btnTabMisOfertas');
+    
+    if (subTabActiva === "global") {
+        btnGlobal.classList.add('active');
+        btnPropias.classList.remove('active');
+    } else {
+        btnGlobal.classList.remove('active');
+        btnPropias.classList.add('active');
+    }
+    
     renderizarVista();
 };
 
@@ -47,7 +57,7 @@ function renderizarVista() {
         // --- PESTAÑA: EXPLORADOR GLOBAL ---
         const empresasUnicas = [...new Set(ofertasGlobales.map(o => o.empresa))];
         const listaOrdenada = empresasUnicas.filter(e => e !== miEmpresaLogueada);
-        listaOrdenada.unshift(miEmpresaLogueada);  // Forzamos nuestra empresa al principio de la lista
+        listaOrdenada.unshift(miEmpresaLogueada);
 
         listaOrdenada.forEach((nombreEmpresa, idx) => {
             const listado = ofertasGlobales.filter(o => o.empresa === nombreEmpresa);
@@ -57,7 +67,7 @@ function renderizarVista() {
             mainBox.insertAdjacentHTML('beforeend', `
                 <div style="background-color: white; border: 1px solid #dcdcdc; border-left: 5px solid ${esMia ? '#0094b6' : '#133253'}; border-radius: 6px; overflow: hidden; margin-bottom: 5px;">
                     <div onclick="toggleLocal(${idx})" class="offer-card" style="display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; cursor: pointer; margin: 0; border: none; box-shadow: none; border-bottom: 1px solid #e2e8f0;">
-                        ${asset.banner ? `<div class="card-background-banner" style="background-image: url('images/empresas/${asset.banner}'); opacity: 0.65;"></div>` : ''}
+                        ${asset.banner ? `<div class="card-background-banner" style="background-image: url('images/empresas/${asset.banner}');"></div>` : ''}
                         <div style="display: flex; align-items: center; gap: 15px; z-index: 2;">
                             <img src="images/empresas/${asset.foto}" alt="Logo" style="width: 55px; height: 55px; border-radius: 50%; object-fit: cover; border: 2px solid #133253; background-color:#fff;">
                             <div>
@@ -118,9 +128,9 @@ function renderizarVista() {
             }
 
             mainBox.insertAdjacentHTML('beforeend', `
-                <div style="background-color: white; border: 1px solid #dcdcdc; border-left: 5px solid #0094b6; border-radius: 6px; overflow: hidden; margin-bottom: 5px;">
+                <div id="contenedor-oferta-vut-${o.id}" style="background-color: white; border: 1px solid #dcdcdc; border-left: 5px solid #0094b6; border-radius: 6px; overflow: hidden; margin-bottom: 5px;">
                     <div onclick="toggleLocal(${idx})" class="offer-card" style="display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; cursor: pointer; margin: 0; border: none; box-shadow: none; border-bottom: 1px solid #e2e8f0;">
-                        ${assetPropio.banner ? `<div class="card-background-banner" style="background-image: url('images/empresas/${assetPropio.banner}'); opacity: 0.65;"></div>` : ''}
+                        ${assetPropio.banner ? `<div class="card-background-banner" style="background-image: url('images/empresas/${assetPropio.banner}');"></div>` : ''}
                         <div style="display: flex; align-items: center; gap: 15px; z-index: 2;">
                             <div style="background:#0094b6; color:white; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold;">💼</div>
                             <div>
@@ -130,10 +140,10 @@ function renderizarVista() {
                         </div>
                         <div style="z-index:10; display:flex; align-items:center; gap:10px;">
                             <button onclick="event.stopPropagation(); borrarId(${o.id});" style="background:#d9534f; color:white; border:none; padding:6px 12px; border-radius:4px; font-weight:bold; font-size:11px; cursor:pointer;">Eliminar</button>
-                            <span id="flecha-${idx}" style="font-size: 16px; color: #133253; font-weight: bold;">▼</span>
+                            <span id="flecha-${idx}" style="font-size: 16px; color: #133253; font-weight: bold; transform: rotate(0deg);">▼</span>
                         </div>
                     </div>
-                    <div id="sub-${idx}" style="display: none; padding: 15px; background-color: #f8fafc; border-top: 1px solid #e2e8f0; flex-direction: column; gap: 10px;">
+                    <div id="sub-${idx}" data-ofertaid="${o.id}" class="vut-acordeon-content" style="display: none; padding: 15px; background-color: #f8fafc; border-top: 1px solid #e2e8f0; flex-direction: column; gap: 10px;">
                         <h4 style="margin:0 0 5px 0; font-size:13px; color:#0094b6; text-transform:uppercase; font-weight:bold;">👥 Expedientes de Postulantes en Sistema:</h4>
                         ${filasPostulantesHtml}
                     </div>
@@ -141,7 +151,7 @@ function renderizarVista() {
             `);
         });
 
-        // Formulario incrustado para inyectar nuevas ofertas vacías
+        // Formulario incrustado de inserción
         mainBox.insertAdjacentHTML('beforeend', `
             <div style="padding: 15px; border: 2px dashed #0094b6; background-color: #f0f9ff; border-radius: 6px; margin-top: 5px;">
                 <h4 style="margin: 0 0 10px 0; color: #0094b6; font-size: 14px; font-weight: bold; text-transform: uppercase; text-align: center;">✨ Formulario de Oferta en Blanco</h4>
@@ -170,82 +180,100 @@ window.toggleLocal = function(idx) {
 };
 
 window.borrarId = function(id) {
-    if (confirm("¿Eliminar oferta definitivamente?")) {
-        let list = JSON.parse(localStorage.getItem('ofertasLaborales')) || [];
-        list = list.filter(o => o.id !== id);
-        localStorage.setItem('ofertasLaborales', JSON.stringify(list));
-        
-        let post = JSON.parse(localStorage.getItem('misPostulaciones')) || [];
-        post = post.filter(p => p.id !== id);
-        localStorage.setItem('misPostulaciones', JSON.stringify(post));
-
-        alert("Oferta removida.");
-        renderizarVista();
-    }
+    let actuales = JSON.parse(localStorage.getItem('ofertasLaborales')) || [];
+    actuales = actuales.filter(o => o.id !== id);
+    localStorage.setItem('ofertasLaborales', JSON.stringify(actuales));
+    renderizarVista();
 };
 
 window.guardarIncrustada = function(e) {
     e.preventDefault();
-    let list = JSON.parse(localStorage.getItem('ofertasLaborales')) || [];
-    const semilla = assetsFijos.find(a => a.empresa === miEmpresaLogueada) || {};
+    const cargoVal = document.getElementById('c').value;
+    const horVal = document.getElementById('h').value;
+    const suelVal = document.getElementById('s').value;
+    const descVal = document.getElementById('d').value;
 
-    const n = {
-        id: Date.now(),
+    let actuales = JSON.parse(localStorage.getItem('ofertasLaborales')) || [];
+    const nuevoId = actuales.length > 0 ? Math.max(...actuales.map(o => o.id)) + 1 : 1;
+
+    const nuevaOferta = {
+        id: nuevoId,
+        cargo: cargoVal,
         empresa: miEmpresaLogueada,
-        cargo: document.getElementById('c').value,
-        horario: document.getElementById('h').value,
-        sueldo: document.getElementById('s').value,
-        descripcion: document.getElementById('d').value,
+        descripcion: descVal,
+        horario: horVal,
+        sueldo: suelVal,
         postulantes: 0,
-        postulantesDetalle: [],
-        fotoEmpresa: semilla.foto || "empty_user.png",
-        bannerEmpresa: semilla.banner || ""
+        postulantesDetalle: []
     };
 
-    list.push(n);
-    localStorage.setItem('ofertasLaborales', JSON.stringify(list));
-    alert("Oferta publicada con éxito.");
+    actuales.push(nuevaOferta);
+    localStorage.setItem('ofertasLaborales', JSON.stringify(actuales));
     renderizarVista();
 };
 
-window.abrirModalPerfil = function(ofertaId, alumnoRut) {
-    let ofertasGlobales = JSON.parse(localStorage.getItem('ofertasLaborales')) || [];
-    const o = ofertasGlobales.find(item => item.id === ofertaId);
-    if (!o) return;
-    
-    const p = o.postulantesDetalle.find(item => item.rut === alumnoRut);
-    if (!p) return;
+/**
+ * SISTEMA MODAL INTERACTIVO DE EVALUACIÓN
+ */
+let modalOfertaIdActual = null;
+let modalAlumnoRutActual = null;
 
-    const modalHtml = `
-        <div id="modalPerfilFlotante" style="position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); display:flex; align-items:center; justify-content:center; z-index:99999;">
-            <div style="background:white; width:360px; padding:20px; border-radius:8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); font-family: Arial, sans-serif; position:relative; text-align: center;">
-                <img src="images/usuarios/${p.foto || 'userM1.png'}" alt="Foto Perfil" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; border: 2px solid #133253; background-color: #f1f5f9;">
-                <h3 style="margin: 0 0 5px 0; color:#133253; font-size:18px; font-weight:bold;">${p.nombre}</h3>
-                <p style="margin: 0 0 12px 0; font-size:12px; color:#555;"><strong>RUT:</strong> ${p.rut} <br> <strong>Carrera:</strong> ${p.carrera}</p>
-                <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:10px; border-radius:4px; font-size:13px; color:#4a5568; line-height:1.4; margin-bottom:15px; max-height:100px; overflow-y:auto; text-align: left;">
-                    ${p.bio}
+window.abrirModalPerfil = function(ofertaId, alumnoRut) {
+    modalOfertaIdActual = ofertaId;
+    modalAlumnoRutActual = alumnoRut;
+
+    let ofertasGlobales = JSON.parse(localStorage.getItem('ofertasLaborales')) || [];
+    const oferta = ofertasGlobales.find(o => o.id === ofertaId);
+    if (!oferta) return;
+
+    const postulante = oferta.postulantesDetalle.find(p => p.rut === alumnoRut);
+    if (!postulante) return;
+
+    // Inyección estructural del contenedor modal al final del body
+    document.body.insertAdjacentHTML('beforeend', `
+        <div id="modalFondoEvaluacion" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 9999;">
+            <div style="background: white; width: 100%; max-width: 500px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.15); animation: fadeModal 0.2s ease-out;">
+                <div style="background: #133253; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="margin:0; font-size:16px; font-weight:bold;">Expediente de Postulación</h3>
+                    <button onclick="cerrarModalEval()" style="background:none; border:none; color:white; font-size:20px; cursor:pointer; font-weight:bold;">&times;</button>
                 </div>
-                <div style="display:flex; flex-direction:column; gap:8px;">
-                    <button onclick="responderPostulacion(${ofertaId}, '${alumnoRut}', 'Aceptado')" style="background:#28a745; color:white; border:none; padding:10px; border-radius:4px; font-weight:bold; cursor:pointer; font-size:13px;">Aceptar</button>
-                    <button onclick="responderPostulacion(${ofertaId}, '${alumnoRut}', 'Rechazado')" style="background:#dc3545; color:white; border:none; padding:10px; border-radius:4px; font-weight:bold; cursor:pointer; font-size:13px;">Rechazar</button>
-                    <button onclick="/* Operación no funcional simulada */" style="background:#6c757d; color:white; border:none; padding:10px; border-radius:4px; font-weight:bold; cursor:pointer; font-size:13px;">DescargarCV</button>
-                    <button onclick="cerrarModalPerfil()" style="background:none; border:none; color:#718096; text-decoration:underline; font-size:12px; cursor:pointer; margin-top:4px;">Cerrar Ventana</button>
+                <div style="padding: 20px; display: flex; flex-direction: column; gap: 15px;">
+                    <div style="display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 15px;">
+                        <img src="images/usuarios/${postulante.foto || 'userM1.png'}" style="width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 2px solid #133253;">
+                        <div>
+                            <h4 style="margin:0 0 4px 0; color:#133253; font-size:16px;">${postulante.nombre}</h4>
+                            <p style="margin:2px 0; font-size:13px; color:#4a5568;"><strong>RUT:</strong> ${postulante.rut}</p>
+                            <p style="margin:2px 0; font-size:13px; color:#0094b6;"><strong>Carrera:</strong> ${postulante.carrera}</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h5 style="margin:0 0 6px 0; font-size:12px; color:#a0aec0; letter-spacing:1px; text-transform:uppercase;">Declaración de Objetivos / Bio</h5>
+                        <p style="margin:0; font-size:13px; color:#4a5568; line-height:1.5; background:#f8fafc; padding:10px; border-radius:4px; border:1px solid #e2e8f0;">
+                            ${postulante.bio || 'El estudiante no ha registrado una biografía complementaria de presentación en su perfil.'}
+                        </p>
+                    </div>
+                    <div style="margin-top: 10px; padding: 10px; background: #e6f4f8; border-radius: 4px; font-size: 12px; color: #133253;">
+                        <strong>Estado actual en sistema:</strong> ${postulante.estado}
+                    </div>
+                </div>
+                <div style="background: #f8fafc; padding: 15px 20px; display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid #e2e8f0;">
+                    <button onclick="responderPostulacion(${ofertaId}, '${alumnoRut}', 'Rechazado')" style="background:#d9534f; color:white; border:none; padding:8px 16px; border-radius:4px; font-weight:bold; cursor:pointer; font-size:13px;">Rechazar</button>
+                    <button onclick="responderPostulacion(${ofertaId}, '${alumnoRut}', 'Aceptado')" style="background:#28a745; color:white; border:none; padding:8px 16px; border-radius:4px; font-weight:bold; cursor:pointer; font-size:13px;">Aceptar</button>
                 </div>
             </div>
         </div>
-    `;
-    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    `);
 };
 
-window.cerrarModalPerfil = function() {
-    const modal = document.getElementById('modalPerfilFlotante');
+window.cerrarModalEval = function() {
+    const modal = document.getElementById('modalFondoEvaluacion');
     if (modal) modal.remove();
+    modalOfertaIdActual = null;
+    modalAlumnoRutActual = null;
 };
 
 /**
- * responderPostulacion
- * Modifica el estado evaluativo del candidato.
- * CORRECCIÓN: Sincroniza limpiamente la propiedad interna .estado tanto en la lista global 
+ * Procesa la evaluación (Aceptar/Rechazar) impactando tanto en la lista global 
  * de ofertas como en la lista de postulaciones relacionales del estudiante de forma unificada.
  */
 window.responderPostulacion = function(ofertaId, alumnoRut, estadoFinal) {
@@ -265,7 +293,7 @@ window.responderPostulacion = function(ofertaId, alumnoRut, estadoFinal) {
     if (alumnoRut === "12345678-9") {
         const postIdx = misPostulaciones.findIndex(p => p.id === ofertaId);
         if (postIdx !== -1) {
-            misPostulaciones[postIdx].estado = estadoFinal; // CORRECCIÓN: Cambiado de estadoResolucion a estado
+            misPostulaciones[postIdx].estado = estadoFinal; 
         }
     }
 
@@ -273,8 +301,22 @@ window.responderPostulacion = function(ofertaId, alumnoRut, estadoFinal) {
     localStorage.setItem('ofertasLaborales', JSON.stringify(ofertasGlobales));
     localStorage.setItem('misPostulaciones', JSON.stringify(misPostulaciones));
     
-    cerrarModalPerfil();
+    cerrarModalEval();
     renderizarVista();
+
+    // Lógica inmediata de reapertura: busca el elemento que tenía ese ID y le simula clic al header del acordeón
+    const todosLosContenidos = document.querySelectorAll('.vut-acordeon-content');
+    todosLosContenidos.forEach((elemento) => {
+        if (parseInt(elemento.getAttribute('data-ofertaid')) === ofertaId) {
+            const componentePadre = elemento.parentElement;
+            if (componentePadre) {
+                const cabeceraAcordeon = componentePadre.querySelector('.offer-card');
+                if (cabeceraAcordeon) {
+                    cabeceraAcordeon.click();
+                }
+            }
+        }
+    });
 };
 
 document.addEventListener('DOMContentLoaded', inicializar);

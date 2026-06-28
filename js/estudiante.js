@@ -19,7 +19,7 @@ function inicializarPerfilEstudiante() {
             <img src="images/usuarios/prota.png" 
                  alt="Elena Rostova" 
                  style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block;">
-        `; // CORRECCIÓN: Eliminados los estilos redundantes del script inline a través de propiedades directas
+        `;
         sidebarAvatar.style.padding = "0";
         sidebarAvatar.style.overflow = "hidden";
         sidebarAvatar.style.background = "#fff";
@@ -74,7 +74,7 @@ function renderizarOfertas() {
             const empresaHtml = `
                 <div style="background-color: white; border: 1px solid #dcdcdc; border-left: 5px solid #133253; border-radius: 6px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.04); margin-bottom: 8px;">
                     <div onclick="toggleEmpresa(${index})" class="offer-card" style="display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; cursor: pointer; margin: 0; border: none; border-radius: 0; box-shadow: none; border-bottom: 1px solid #e2e8f0;">
-                        ${banner ? `<div class="card-background-banner" style="background-image: url('images/empresas/${banner}'); opacity: 0.65;"></div>` : ''}
+                        ${banner ? `<div class="card-background-banner" style="background-image: url('images/empresas/${banner}');"></div>` : ''}
                         <div style="display: flex; align-items: center; gap: 15px; z-index: 2;">
                             <img src="images/empresas/${foto}" alt="Logo" style="width: 55px; height: 55px; border-radius: 50%; object-fit: cover; border: 2px solid #133253; background-color: #fff;">
                             <div>
@@ -116,27 +116,30 @@ function renderizarOfertas() {
         misPostulaciones.forEach(registroPostulacion => {
             // Buscamos la información en tiempo real de la oferta basándonos en el ID de la postulación
             const ofertaReal = ofertasLaborales.find(o => o.id === registroPostulacion.id);
-            if (!ofertaReal) return; // Salvaguarda en caso de que la empresa haya borrado la vacante
+            if (!ofertaReal) return; 
 
             const oOrigen = ofertasSemilla.find(s => s.empresa === ofertaReal.empresa) || ofertaReal;
             const img = oOrigen.fotoEmpresa || "empty_user.png";
             const banner = oOrigen.bannerEmpresa || "";
 
-            // CORRECCIÓN INTERNA: Evaluación unificada usando .estado en lugar de estadoResolucion
-            let textoBoton = "Postulado con Éxito";
-            let claseEstiloAdicional = "btn-success";
+            // Cambios de color solicitados para los botones según su estado
+            let textoBoton = "En Revisión";
+            let claseEstiloAdicional = "";
+            let estiloInlineColor = "background-color: #e2e8f0; color: #4a5568;"; // Gris por defecto para "En Revisión"
 
             if (registroPostulacion.estado === "Aceptado") {
                 textoBoton = "Postulación aceptada";
                 claseEstiloAdicional = "btn-success";
+                estiloInlineColor = ""; // Usa la clase .btn-success verde del CSS
             } else if (registroPostulacion.estado === "Rechazado") {
                 textoBoton = "Postulación rechazada";
                 claseEstiloAdicional = "btn-danger";
+                estiloInlineColor = ""; // Usa la clase .btn-danger roja del CSS
             }
 
             const cardHtml = `
                 <article class="offer-card">
-                    ${banner ? `<div class="card-background-banner" style="background-image: url('images/empresas/${banner}'); opacity: 0.65;"></div>` : ''}
+                    ${banner ? `<div class="card-background-banner" style="background-image: url('images/empresas/${banner}');"></div>` : ''}
                     <div class="company-logo-container">
                         <img src="images/empresas/${img}" alt="Logo" class="company-circular-logo">
                         <div class="company-name-label">${ofertaReal.empresa}</div>
@@ -145,7 +148,7 @@ function renderizarOfertas() {
                         <h2 class="offer-title">${ofertaReal.cargo}</h2>
                         <p class="offer-description">${ofertaReal.descripcion}</p>
                         <p class="offer-info-line"><strong>Sueldo:</strong> $${ofertaReal.sueldo} | <strong>Total Postulantes:</strong> ${(ofertaReal.postulantesDetalle || []).length}</p>
-                        <button class="apply-button ${claseEstiloAdicional}" disabled>${textoBoton}</button>
+                        <button class="apply-button ${claseEstiloAdicional}" style="${estiloInlineColor}" disabled>${textoBoton}</button>
                     </div>
                 </article>
             `;
@@ -189,14 +192,14 @@ window.asignarOferta = function(id) {
             carrera: "Ingeniería Civil Informática",
             bio: "Estudiante destacada e impulsora del proyecto. Apasionada por el desarrollo web front-end, interfaces interactivas y la arquitectura de sistemas escalables en la nube.",
             foto: "prota.png",
-            estado: "En Revisión" // CORRECCIÓN: Unificado
+            estado: "En Revisión"
         };
 
         // Mutamos la base de datos general de ofertas
         ofertasLaborales[index].postulantesDetalle.push(protaDefecto);
         ofertasLaborales[index].postulantes += 1;
         
-        // CORRECCIÓN OPTIMIZADA: En 'misPostulaciones' guardamos solo una tupla identificadora/estado relacional
+        // Guardamos la tupla identificadora/estado relacional
         misPostulaciones.push({
             id: id,
             estado: "En Revisión"
